@@ -16,6 +16,9 @@ FROM EMPLOYEE;
 -- 와일드카드 : %(0개 이상의 모든 문자를 매칭), _(하나의 자리에 해당하는 모든 문자를 매칭)
 -- SELECT의 결과물은 ResultSet
 -- 1-1. 전씨 성을 가진 직원의 이름과 급여를 조회하시오
+SELECT EMP_NAME FROM EMPLOYEE WHERE EMP_NAME = '차태연' OR EMP_NAME = '전지연';
+
+
 
 
 --2. EMPLOYEE 테이블에서 전화번호 처음 3자리가 010이 아닌 사원의 이름, 전화번호를

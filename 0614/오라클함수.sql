@@ -133,12 +133,6 @@ SELECT EMP_NAME, EMP_NO, SALARY
   END AS 성별
 FROM EMPLOYEE;
 
-
-
-
-
-
-
 -- 문자처리함수
 -- @함수 최종실습문제
 --1. 직원명과 이메일 , 이메일 길이를 출력하시오
@@ -226,12 +220,64 @@ FROM EMPLOYEE;
 --	* 주민번호가 이상한 사람들은 제외시키고 진행 하도록(200,201,214 번 제외)
 --	* HINT : NOT IN 사용
 
+SELECT EMP_NAME, DEPT_CODE,
+EXTRACT(YEAR FROM TO_DATE(SUBSTR(EMP_NO, 1, 2), 'RR'))||'년 '||
+EXTRACT(MONTH FROM TO_DATE(SUBSTR(EMP_NO, 3, 2), 'MM'))||'월 '||
+EXTRACT(DAY FROM TO_DATE(SUBSTR(EMP_NO, 5, 2), 'DDD'))||'일' "생년월일 (TO_DATE)",
+-- 날짜 형변환을 이용한 방법
+EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM TO_DATE(SUBSTR(EMP_NO, 1, 2), 'RR')) "나이(만)",
+-- 숫자 형변환을 이용한 방법
+EXTRACT(YEAR FROM SYSDATE) - (DECODE(SUBSTR(EMP_NO,8,1), '1', 1900, '2', 1900, '3', 2000, '4', 2000)+TO_NUMBER(SUBSTR(EMP_NO,1,2))) "나이(만)DECODE"
+FROM EMPLOYEE;
+
+/*
+============================
+형식	        의미
+============================
+YYYY	   년도표현(4자리)
+YY	      년도 표현 (2자리)
+RR      년도 표현 (2자리), 50이상 1900, 50미만 2000
+MONTH   월을 LOCALE설정에 맞게 출력(FULL)
+MM	   월을숫자로표현  
+MON	    월을 알파벳으로 표현(월요일아님)
+DDD     365일 표현
+DD	    날짜 표현	
+D      요일을 숫자로 표현(1:일요일...) 
+DAY	   요일 표현	  
+DY	   요일을 약어로 표현	
+
+HH HH12     시각
+HH          시각(24시간)
+MI
+SS
+
+AM PM A.M. P.M. 오전오후표기
+
+FM          월, 일, 시,분, 초앞의 0을 제거함.
+*/
+
+
+SELECT EMP_ID, EMP_NO FROM EMPLOYEE;
+SELECT 
+EXTRACT(YEAR FROM TO_DATE('01', 'YY')) 
+, EXTRACT(YEAR FROM TO_DATE('94', 'RR'))  --RR인 경우 50이상 1900년대, 50미만 2000년대
+, EXTRACT(YEAR FROM TO_DATE('12', 'RR')) 
+FROM DUAL;
+
+SELECT EXTRACT(YEAR FROM TO_DATE(SUBSTR(EMP_NO,1,2), 'RR')) "출생년도"
+FROM EMPLOYEE;
+
+
+
+SELECT TO_DATE('94', 'YY') FROM DUAL;
+
 
 
 --11. 사원명과, 부서명을 출력하세요.
 --   부서코드가 D5이면 총무부, D6이면 기획부, D9이면 영업부로 처리하시오.(case 사용)
 --   단, 부서코드가 D5, D6, D9 인 직원의 정보만 조회하고, 부서코드 기준으로 오름차순 정렬함.
-
+SELECT DEPT_CODE
+FROM EMPLOYEE;
 
 
 
