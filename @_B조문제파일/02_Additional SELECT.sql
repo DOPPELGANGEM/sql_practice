@@ -1,0 +1,53 @@
+SELECT * FROM TB_CLASS;
+SELECT * FROM TB_PROFESSOR;
+
+
+-- Additional SELECT
+--   1,6,11)김현우
+--   2,7,12)권태우
+--   3,8,13)한창희
+--   4,9,14)강정대
+--   5,10,15)이기진
+
+
+--1)
+SELECT STUDENT_NO AS 학번 , STUDENT_NAME AS 이름 , TO_CHAR(ENTRANCE_DATE,'RRRR-MM-DD') AS 입학년도
+
+FROM TB_STUDENT
+WHERE DEPARTMENT_NO LIKE '002'
+ORDER BY 3;
+
+--2)
+
+--3) 
+
+
+--4)
+
+--5)
+
+--6)
+SELECT TO_CHAR(TO_DATE('2020-12-25','YYYY-MM-DD'),'DAY')FROM DUAL;
+--답은 금요일
+
+
+--7)
+
+--8) 
+
+
+--9)
+
+--10)
+
+--11)
+SELECT COUNT(*)
+FROM TB_STUDENT
+WHERE COACH_PROFESSOR_NO IS NULL;
+
+
+--12)
+--13)
+--14)
+--15)
+

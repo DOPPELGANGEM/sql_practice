@@ -1,0 +1,37 @@
+SELECT * FROM TB_CLASS;
+SELECT * FROM TB_PROFESSOR;
+
+-- DML
+--   1,6)김현우
+--   2,7)권태우
+--   3,8)한창희
+--   4)강정대
+--   5)이기진
+
+
+--1)
+INSERT INTO TB_CLASS_TYPE VALUES ('01','전공필수');
+INSERT INTO TB_CLASS_TYPE VALUES ('02','전공선택');
+INSERT INTO TB_CLASS_TYPE VALUES ('03','교양필수');
+INSERT INTO TB_CLASS_TYPE VALUES ('04','교양선택');
+INSERT INTO TB_CLASS_TYPE VALUES ('05','논문지도');
+--2)
+
+--3) 
+
+
+--4)
+
+--5)
+
+--6)
+SELECT SUBSTR(STUDENT_SSN,1,6)
+FROM TB_STUDENT;
+
+
+--7)
+
+--8) 
+
+
+
