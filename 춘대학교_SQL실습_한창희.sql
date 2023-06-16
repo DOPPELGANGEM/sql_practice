@@ -57,6 +57,17 @@ WHERE PROFESSOR_SSN LIKE '%-1%'
 ORDER BY 2 ASC;
 
 
+--8)춘 기술대학교의 2000 년도 이후 입학자들은 학번이 A 로 시작하게 되어있다. 2000 년도
+--이전 학번을 받은 학생들의 학번과 이름을 보여주는 SQL 문장을 작성하시오
+SELECT STUDENT_NO, STUDENT_NAME FROM TB_STUDENT
+WHERE STUDENT_NO NOT LIKE 'A%';
+
+--13) 학과 별 휴학생 수를 파악하고자 핚다. 학과 번호와 휴학생 수를 표시하는 SQL 문장을 작성하시오. --NVL
+SELECT DEPARTMENT_NO "학과코드명", COUNT(*) "휴학생 수" FROM TB_STUDENT
+WHERE ABSENCE_YN = 'Y'
+GROUP BY DEPARTMENT_NO
+ORDER BY DEPARTMENT_NO;
+
 
 --3. Additional SELECT(option)
 --   1,6,11,16)김현우
