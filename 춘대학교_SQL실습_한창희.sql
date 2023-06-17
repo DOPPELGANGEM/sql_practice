@@ -30,10 +30,7 @@ WHERE PREATTENDING_CLASS_NO IS NOT NULL;
 --   5,10,15)이기진
 
 
---3) 춘 기술대학교의 남자 교수들의 이름과 나이를 출력하는 SQL 문장을 작성하시오. 단
---이때 나이가 적은 사람에서 맋은 사람 순서로 화면에 출력되도록 맊드시오. (단, 교수 중
---2000 년 이후 출생자는 없으며 출력 헤더는 "교수이름", "나이"로 핚다. 나이는 ‘ 맊’ 으로
---계산핚다.)
+--3) 
 
 select sysdate from dual;
 select substr('1212122', 0 ,5) from dual;
@@ -54,12 +51,11 @@ WHERE PROFESSOR_SSN LIKE '%-1%'
 ORDER BY 2 ASC;
 
 
---8)춘 기술대학교의 2000 년도 이후 입학자들은 학번이 A 로 시작하게 되어있다. 2000 년도
---이전 학번을 받은 학생들의 학번과 이름을 보여주는 SQL 문장을 작성하시오
+--8)
 SELECT STUDENT_NO, STUDENT_NAME FROM TB_STUDENT
 WHERE STUDENT_NO NOT LIKE 'A%';
 
---13) 학과 별 휴학생 수를 파악하고자 핚다. 학과 번호와 휴학생 수를 표시하는 SQL 문장을 작성하시오.
+--13) 
 SELECT DEPARTMENT_NO "학과코드명", COUNT(*) ABSENCE_YN FROM TB_STUDENT
 GROUP BY DEPARTMENT_NO, ABSENCE_YN
 HAVING ABSENCE_YN = 'Y' 
@@ -73,9 +69,11 @@ ORDER BY DEPARTMENT_NO;
 --   5,10,15)이기진
 
 --3) 
-SELECT STUDENT_NAME AS 학생이름,DEPARTMENT_NO AS 학번 ,STUDENT_ADDRESS AS 주소지
-FROM TB_STUDENT;
-
+SELECT STUDENT_NAME AS 학생이름, STUDENT_NO AS 학번 , STUDENT_ADDRESS AS 주소지
+FROM TB_STUDENT
+WHERE STUDENT_ADDRESS LIKE '경기도%' AND
+STUDENT_NO LIKE '9%'
+ORDER BY "학생이름";
 
 --8)
 SELECT A.CLASS_NAME "과목 이름", B.PROFESSOR_NAME "교수 이름"
@@ -84,6 +82,7 @@ LEFT JOIN TB_CLASS "A" ON CP.CLASS_NO = A.CLASS_NO
 LEFT JOIN TB_PROFESSOR "B" ON CP.PROFESSOR_NO = B.PROFESSOR_NO;
 
 -- 13)
+
 
 -- 18)
 SELECT STUDENT_NO, STUDENT_NAME FROM TB_STUDENT
