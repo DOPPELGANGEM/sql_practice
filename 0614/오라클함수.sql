@@ -13,7 +13,9 @@ ORDER BY 1 ASC;
 SELECT DISTINCT SUBSTR(EMP_NAME, 1, 1) "성"
 FROM EMPLOYEE
 ORDER BY 1 ASC;
+
 -- LENGTH, LENGTHB, INSTR, SUBSTR, LPAD/RPAD, LTRIN/RTRIM/TRIM, REPLACE(교체하기)
+-- SUBSTR (컬럼명, 시작위치, 문자개수)
 
 -- =========================== @실습문제 ===========================
 -- employee 테이블에서 남자만 사원번호, 사원명, 주민번호, 연봉을 나타내세요.
@@ -25,66 +27,131 @@ FROM EMPLOYEE
 --WHERE EMP_NO LIKE '%-1%' OR EMP_NO LIKE '%-3%';
 WHERE SUBSTR(EMP_NO,8,1) = 1 OR SUBSTR(EMP_NO,8,1) = 3; 
 
+-- LPAD("값", "총 문자길이", "채움문자") : 지정한 길이만큼 왼쪽부터 채움문자로 채움.
+-- 채움문자를 지정하지 않으면 공백으로 해당 길이만큼 문자를 채운다.   (예, LPAD(deptno, 5))
+-- RPAD("값", "총 문자길이", "채움문자") : 지정한 길이만큼 오른쪽부터 채움문자로 채움, 
+-- 채움문자를 지정하지 않으면 공백으로 해당 길이만큼 문자를 채운다.   (예, RPAD(deptno, 5))
+SELECT EMP_ID, EMP_NAME,
+SUBSTR(EMP_NO, 1, 8) || '******', RPAD(SUBSTR(EMP_NO,1, 8),14, '*'),
+SALARY*12
+FROM EMPLOYEE
+--WHERE EMP_NO LIKE '%-1%' OR EMP_NO LIKE '%-3%';
+WHERE SUBSTR(EMP_NO,8,1) = 1 OR SUBSTR(EMP_NO,8,1) = 3;
+
+-- 한줄씩까보기 --
+SELECT SUBSTR(EMP_NO, 1, 8) FROM EMPLOYEE;
+SELECT RPAD(SUBSTR(EMP_NO, 1, 8), 14,'*') FROM EMPLOYEE;
+SELECT SUBSTR(EMP_NO, 8, 1) FROM EMPLOYEE; -- SUBSTR (컬럼명, 시작위치, 문자개수)
+
+
 -- =========================== @실습문제 ===========================
 -- 다음문자열에서 앞뒤 모든 숫자를 제거하세요.
 -- '982341678934509hello89798739273402'
+--TRIM 함수는 문자열의 양쪽 공백을 제거하는 기본적인 함수이다. 
+--LTRIM 함수, RTRIM 함수는 왼쪽과 오른쪽의 공백을 제거할 때 사용가능 하지만, 반복적인 문자나 특정 문자를 제거할 때 자주 사용한다.
+-- LTRIM 함수는 문자열의 왼쪽(좌측)공백 제거, 문자 뒤쪽 LTRIM("문자열", "옵션")
+-- RTRIM 함수는 문자열의  오른쪽(우측) 공백  제거,  RTRIM("문자열", "옵션") 
 SELECT RTRIM(LTRIM('982341678934509hello89798739273402' ,'0123456789'), '0123456789') FROM DUAL;
 
-
-
+SELECT LTRIM('982341678934509hello89798739273402' ,'0123456789') FROM DUAL;
+SELECT RTRIM(LTRIM('982341678934509hello89798739273402' ,'0123456789'),'0123456789') FROM DUAL;
 
 -- ' KH ', 'KH'
 -- ============== DUAL 테이블 ==============
 -- 한 열로 이루어진 특별한 테이블, SYSDATE, USER, 산술연살과 같은 의사컬럼 선택에 사용하도록 해줌
 SELECT * FROM DUAL; --VARCHAR2(1) : 'x'값이 존재함
+
 -- ============== LTRIM/RTRIM/TRIM ==============
-SELECT RTRIM(LTRIM('  KH  ')) FROM DUAL;
-SELECT TRIM('  KH  ') FROM DUAL;
-SELECT RTRIM(LTRIM('123KH123','123'), '123') FROM DUAL;
-SELECT TRIM('Z' FROM 'ZZZKHZZZ') FROM DUAL;
-SELECT SYSDATE FROM DUAL;
+SELECT RTRIM(LTRIM('  KH  ')) FROM DUAL; -- KH
+SELECT TRIM('  KH  ') FROM DUAL; --KH
+SELECT RTRIM(LTRIM('123KH123','123'), '123') FROM DUAL; --KH
+SELECT TRIM('Z' FROM 'ZZZKHZZZ') FROM DUAL; --KH
+SELECT SYSDATE FROM DUAL; --23/06/19 (현재날짜)
+
+
 -- LENGTH, LENGTHB, INSTR, SUBSTR, LPAD/RPAD, LTRIM/RTRIM/TRIM, REPLACE,
 -- CONCAT, ||, LOWER, UPPER, INITCAP
 -- ============== REPLACE 함수 ==============
 -- '서울시 강남구 역삼동' -> 삼성동
+-- 함수사용법 : REPLACE("칼럼명 or 문자열", "찾을문자", "치환문자")
 SELECT REPLACE ('서울시 강남구 역삼동', '역삼동', '삼성동') FROM DUAL;
+
+
 -- ============== 실습문제4 ==============
 -- EMPLOYEE에서 EMAIL컬럼의 주소를 gmail.com으로 바꿔주세요.
-SELECT REPLACE(EMAIL, '@kh.or.kr', '@gmail.com') FROM EMPLOYEE
-WHERE SALARY >= 3000000;
+SELECT REPLACE(EMAIL, '@kh.or.kr', '@gmail.com') , SALARY FROM EMPLOYEE
+WHERE SALARY >= 3000000; -- 급여 300만이상
 
 -- 2. 숫자 처리 함수
-SELECT (SYSDATE-HIRE_DATE), TRUNC((SYSDATE-HIRE_DATE),1), 
+-- ROUND : 반올림 , TRUNC("값", "옵션") -> TRUNC함수는 주로 소수점 절사 및 날짜의 시간을 없앨때 사용 
+-- FLOOR:소수점이하는무조건버림, CEIL:소수점이하를 무조건 올림
+SELECT (SYSDATE-HIRE_DATE) , TRUNC((SYSDATE-HIRE_DATE),1),
 FLOOR(SYSDATE-HIRE_DATE),
-CEIL(SYSDATE-HIRE_DATE), ROUND(SYSDATE-HIRE_DATE) FROM EMPLOYEE;
+CEIL(SYSDATE-HIRE_DATE), ROUND(SYSDATE-HIRE_DATE)
+FROM EMPLOYEE;
+
+SELECT TRUNC((SYSDATE-HIRE_DATE),1) FROM EMPLOYEE; -- 3785.8 형식
+SELECT FLOOR(SYSDATE-HIRE_DATE) FROM EMPLOYEE;
+SELECT CEIL(SYSDATE-HIRE_DATE) FROM EMPLOYEE;
+SELECT ROUND(SYSDATE-HIRE_DATE) FROM EMPLOYEE;
+
 
 -- 3. 날짜 처리 함수
+-- SYSDATE,SYSTIMESTAMP
+-- SYSDATE와 SYSTIMESTAMP는 현재일자와 시간을 각각 DATE, TIMESTAMP형으로 반환한다.
+SELECT SYSDATE, SYSTIMESTAMP FROM DUAL;
+
 --============== @실습문제1 ==============
 -- EMPLOYEE 테이블에서 사원의 이름, 입사일, 입사 후 3개월이 된 날짜를 조회하시오
 -- ADD_MONTHS()
+-- ADD_MONTHS (date, integer) : ADD_MONTHS함수는 매개변수로 들어온 날짜에 interger 만큼의 월을 더한 날짜를 반환
 SELECT EMP_NAME, HIRE_DATE, ADD_MONTHS(HIRE_DATE,3)
+FROM EMPLOYEE;
+
+SELECT HIRE_DATE, ADD_MONTHS(HIRE_DATE,3) 
 FROM EMPLOYEE;
 
 --============== @실습문제2 ==============
 -- MONTHS_BETWEEN()
---EMPLOYEE 테이블에서 사원의 이름, 입사일, 근무 개월수를 조회하시오
+-- MONTHS_BETWEEN(date1, date2) : 두 날짜 사이의 개월수를 반환하는데 date2가 date1보다 빠른 날짜가온다.
+--  EMPLOYEE 테이블에서 사원의 이름, 입사일, 근무 개월수를 조회하시오
 SELECT EMP_NAME, HIRE_DATE, TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE),1)
 FROM EMPLOYEE;
 
+SELECT EMP_NAME, HIRE_DATE, TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE),1)
+FROM EMPLOYEE;
+
+SELECT TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE),1) FROM EMPLOYEE; -- 124.4형식
+
 --============== @실습문제3 ==============
---LAST_DAY()
+-- LAST_DAY()
+-- LAST_DAY() : date 날짜를 기준으로 해당 월의 마지막 일자를 반환한다.
 --ex) EMPLOYEE 테이블에서 사원의 이름, 입사일, 입사월의 마지막날을 조회하세요
+SELECT EMP_NAME, HIRE_DATE, LAST_DAY(HIRE_DATE)
+FROM EMPLOYEE;
+
 SELECT EMP_NAME, HIRE_DATE, LAST_DAY(HIRE_DATE)+1 --+1하면 그다음달의 1일을 추출
 FROM EMPLOYEE;
+
+SELECT LAST_DAY(HIRE_DATE) FROM EMPLOYEE; -- 13/02/28 형식
+SELECT LAST_DAY(HIRE_DATE)+1 FROM EMPLOYEE; -- LAST_DAY(HIRE_DATE)+1 그다음달의 1일을 추출 13/03/01 형식
 
 
 --============== @실습문제4 ==============
 --ex) EMPLOYEE 테이블에서 사원 이름, 입사 년도, 입사 월, 입사 일을 조회하시오.
+-- EXTRACT 함수 : 날짜 유형의 데이터로부터 날짜 정보를 분리해서 새로운 컬럼의 형태로 추출해주는 함수
+-- YEAR, MONTH, DAY, HOUR, MINUTE, SECOND
+
 SELECT EMP_NAME, 
 EXTRACT(YEAR FROM HIRE_DATE) || '년' ||
 EXTRACT(MONTH FROM HIRE_DATE) || '월' ||
 EXTRACT(DAY FROM HIRE_DATE) || '일'
 FROM EMPLOYEE;
+
+SELECT EXTRACT(YEAR FROM HIRE_DATE) FROM EMPLOYEE;
+SELECT EXTRACT(MONTH FROM HIRE_DATE) FROM EMPLOYEE;
+SELECT EXTRACT(DAY FROM HIRE_DATE) FROM EMPLOYEE;
+
 
 --@실습문제
 /*
@@ -99,6 +166,10 @@ SELECT ADD_MONTHS(SYSDATE,18) "제대날짜",  (ADD_MONTHS(SYSDATE,18)-SYSDATE) * 3 
 
 -- 4.형변환 함수
 -- TO_CHAR, TO_DATE, TO_NUMBER
+-- TO_CHAR(날짜데이터, 형식) : 날짜를 서식에 맞춰서 문자열로 변환 , TO_CHAR(날짜, '서식') -> 서식에 맞는 문자열 반환
+-- TO_DATE(char,서식) : 문자를 날짜로 변환
+-- TO_NUMBER 함수 : 문자열을 쉽게 숫자(정수,실수)로 변환이 가능하다.
+
 -- ============================= TO_DATE (CHAR -> DATE)=============================
 SELECT * FROM EMPLOYEE
 WHERE HIRE_DATE BETWEEN TO_DATE('10/01/01') AND TO_DATE('12/12/31');
@@ -106,20 +177,31 @@ WHERE HIRE_DATE BETWEEN TO_DATE('10/01/01') AND TO_DATE('12/12/31');
 SELECT TO_DATE('20100101', 'YY/MM/DD') FROM DUAL;
 --SELECT TO_DATE('20100101', 'YYYYMMDD') FROM DUAL; --위에꺼랑 결과 같음 10/01/01 오라클에서사용하는날짜형식
 
+
 -- ============================= TO_NUMBER (CHAR -> NUMBER) =============================
 SELECT TO_NUMBER('1,000,000','9,999,999') FROM DUAL;
 SELECT TO_NUMBER('1,000,000','9,999,999') - TO_NUMBER('500,000','999,999') FROM DUAL;
 
+
+
+
 -- ============================= 기타함수 =============================
 -- 1.NVL (널 처리 함수)
+-- NVL("값","지정값") => 값이 null 인 경우, 지정 값을 출력하고 그렇지 않으면 원래값을 그대로 출력한다.
 SELECT NVL(BONUS,0)*SALARY FROM EMPLOYEE;
 SELECT NVL(DEPT_CODE, 'D0') FROM EMPLOYEE;
 
+SELECT BONUS FROM EMPLOYEE;
+SELECT DEPT_CODE FROM EMPLOYEE;
+
 -- 2.DECODE (IF문)
+-- DECODE(컬럼명, 조건1, 결과1, 조건2, 결과2, 조건3, 결과3, ....)
 -- 성별 표시하기
 SELECT EMP_NAME, EMP_NO, SALARY, 
 DECODE(SUBSTR(EMP_NO,8,1),'1','남','2','여','3','남','4','여','무') "성별"
 FROM EMPLOYEE;
+
+SELECT SUBSTR(EMP_NO, 8, 1) FROM EMPLOYEE;
 
 -- 3.CASE (switch문)
 SELECT EMP_NAME, EMP_NO, SALARY
@@ -149,6 +231,8 @@ FROM EMPLOYEE;
 SELECT EMP_NAME "직원명", RTRIM(RTRIM(EMAIL,'kh.or.kr'),'@') "이메일"
 FROM EMPLOYEE;
 
+
+
 --3. 60년대에 태어난 직원명과 년생, 보너스 값을 출력하시오. 그때 보너스 값이 null인 경우에는 0 이라고 출력 되게 만드시오
 --	    직원명    년생      보너스
 --	ex) 선동일	    1962	    0.3
@@ -156,6 +240,12 @@ FROM EMPLOYEE;
 SELECT EMP_NAME AS 직원명, '19'||SUBSTR(EMP_NO,1,2) "년생", NVL(BONUS,0) "보너스"
 FROM EMPLOYEE
 WHERE SUBSTR(EMP_NO,1,2) BETWEEN 60 AND 69;
+
+SELECT EMP_NAME AS 직원명, '19'||SUBSTR(EMP_NO,1,2) "년생", NVL(BONUS,0) "보너스"
+FROM EMPLOYEE
+WHERE SUBSTR(EMP_NO,1,2) BETWEEN 60 AND 69;
+
+SELECT '19'||SUBSTR(EMP_NO,1,2) FROM EMPLOYEE;
 
 
 --4. '010' 핸드폰 번호를 쓰지 않는 사람의 전체 정보를 출력하시오.(해봤던거)
@@ -172,6 +262,7 @@ EXTRACT(YEAR FROM HIRE_DATE) || '년' ||
 EXTRACT(MONTH FROM HIRE_DATE) || '월' "입사년월"
 FROM EMPLOYEE;
 
+
 --6. 직원명과 주민번호를 조회하시오
 --	단, 주민번호 9번째 자리부터 끝까지는 '*' 문자로 채워서 출력 하시오
 --	ex) 홍길동 771120-1******
@@ -179,12 +270,22 @@ SELECT EMP_NAME "직원명", SUBSTR(EMP_NO,1,8) || '******' "주민번호(||)",
 RPAD(SUBSTR(EMP_NO,1,8),14,'*') "주민번호(RPAD)"
 FROM EMPLOYEE;
 
+
+SELECT SUBSTR(EMP_NO,1,8) "주민번호(RPAD)" FROM EMPLOYEE;
+SELECT RPAD(SUBSTR(EMP_NO,1,8),14,'*') FROM EMPLOYEE;
+
+
 --7. 직원명, 직급코드, 연봉(원) 조회
 --  단, 연봉은 ￦57,000,000 으로 표시되게 함
 --     연봉은 보너스포인트가 적용된 1년치 급여임
 SELECT EMP_NAME "직원명", JOB_CODE "직급코드", SALARY*12+SALARY*NVL(BONUS,0) "연봉",
 TO_CHAR(SALARY*12+SALARY*NVL(BONUS,0),'L999,999,999,999') "연봉(TO_CHAR)"
 FROM EMPLOYEE;
+
+
+SELECT TO_CHAR(SALARY*12+SALARY*NVL(BONUS,0),'L999,999,999,999') "연봉(TO_CHAR)" FROM EMPLOYEE;
+SELECT NVL(BONUS,0) FROM EMPLOYEE;
+
 
 /* ======== TO_CHAR 형식 문자(숫자)
 Format		 예시			    설명
@@ -200,18 +301,33 @@ FM         FM1234.56    포맷9로부터 치환된 공백(앞) 및 소수점이하0을 제거
 
 
 --8. 부서코드가 D5, D9인 직원들 중에서 2004년도에 입사한 직원중에 조회함.
---   사번 사원명 부서코드 입사일
+-- 사번 사원명 부서코드 입사일
+
+-- IN 구문은 WHERE절 뒤에 붙여서 컬럼이 특정값을 가지고 있는지 확인하는 용도로 쓰임
+-- SELECT 칼럼명 FROM 테이블명 WHERE 칼럼명 IN (값1, 값2, ...)
+-- 칼럼의 값이 값1 또는 값2에 해당하는 값만 출력
+-- SELECT 칼럼명 FROM 테이블명 WHERE 칼럼명 NOT IN (값1, 값2, ...)
+-- 칼럼의 값이 값1 또는 값2 어디에도 해당하지 않는 것만 출력
 SELECT EMP_ID, EMP_NAME, DEPT_CODE , HIRE_DATE
 FROM EMPLOYEE
 --WHERE DEPT_CODE = 'D5' OR DEPT_CODE = 'D9';
 WHERE DEPT_CODE IN ('D5', 'D9') AND EXTRACT(YEAR FROM HIRE_DATE) = 2004;
 
+SELECT EXTRACT(YEAR FROM HIRE_DATE) FROM EMPLOYEE;
+
 --9. 직원명, 입사일, 오늘까지의 근무일수 조회 
 --	* 주말도 포함 , 소수점 아래는 버림
+-- MONTHS_BETWEEN('날짜1', '날짜2') => 날짜1 - 날짜2 = 개월수
 SELECT EMP_NAME "직원명", HIRE_DATE "입사일", TRUNC(SYSDATE-HIRE_DATE) "근무일수"
 -- 입사일에 개월차를 더한 날짜
 ,TRUNC(SYSDATE - ADD_MONTHS(HIRE_DATE,MONTHS_BETWEEN(SYSDATE,HIRE_DATE))) "일"
 FROM EMPLOYEE;
+
+
+SELECT HIRE_DATE FROM EMPLOYEE; 
+SELECT TRUNC(MONTHS_BETWEEN(SYSDATE,HIRE_DATE)) FROM EMPLOYEE;
+SELECT ADD_MONTHS(HIRE_DATE,MONTHS_BETWEEN(SYSDATE,HIRE_DATE)) FROM EMPLOYEE;
+
 
 --10. 직원명, 부서코드, 생년월일, 나이(만) 조회
 --   단, 생년월일은 주민번호에서 추출해서, 
