@@ -224,10 +224,23 @@ WHERE NATIONAL_CODE IN ('KO', 'JP');
 
 
 
---8. 보너스포인트가 없는 직원들 중에서 직급이 차장과 사원인 직원들의 사원명, 직급명, 급여를 조회하시오. 단, join과 IN 사용할 것
-
+--8. 보너스포인트가 없는 직원들 중에서 직급이 차장과 사원인 직원들의 사원명, 직급명, 급여를 조회하시오. 
+--단, join과 IN 사용할 것
+SELECT EMP_NAME, JOB_NAME, TO_CHAR(SALARY, 'L999,999,999,999')
+FROM EMPLOYEE
+LEFT JOIN JOB USING(JOB_CODE)
+WHERE BONUS IS NULL AND JOB_NAME IN ('차장', '사원');
+-- 컬럼명이같으면 ON 다르면 USING
 
 --9. 재직중인 직원과 퇴사한 직원의 수를 조회하시오.
+SELECT DECODE(ENT_YN, 'N', '재직', '퇴직') "재직여부", COUNT(*) "수"
+FROM EMPLOYEE
+GROUP BY ENT_YN;
+
+
+
+
+
 
 
 
