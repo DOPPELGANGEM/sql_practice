@@ -2,19 +2,30 @@ SELECT * FROM TB_CLASS;
 SELECT * FROM TB_PROFESSOR;
 
 --1. BASIC SELECT
---   1,6)김현우
---   2,7)권태우
---   3,8)한창희
---   4,9)강정대
---   5,10)이기진
---   
 
---3) 
+--1) 춘 기술대학교의 학과 이름과 계열을 표시하시오, 단 출력 헤더는 "학과 명", "계열" 으로 표시되도록한다.
+SELECT DEPARTMENT_NAME "학과명" , CATEGORY "계열"
+FROM TB_DEPARTMENT;
+
+--2) 학과의 학과 정원을 다음과 같은 형태로 화면에 출력한다.
+-- SQL - ||(쌍 파이프) : 문자열이나 커럼을 합쳐주는 역할을 한다.
+SELECT DEPARTMENT_NAME || '의 정원은' || CAPACITY || '명 입니다.' "학과별 정원"
+FROM TB_DEPARTMENT;
+
+
+
+--3) 국어 국문학과에 다니는 여학생 중 현재 휴학중인 여학생을 찾아달라는 요청이 들어왓다. 누구인가?
+-- (국문학과의 '학과코드'는 학과 테이블(TB_DEPARTMENT)을 조회해서 찾아 내도록 하자)
 SELECT STUDENT_NAME , DEPARTMENT_NO, STUDENT_SSN, ABSENCE_YN 
 FROM TB_STUDENT
 WHERE DEPARTMENT_NO = '001' -- DEPARTMENT_NO가 001 인 쿼리
 AND STUDENT_SSN LIKE '%-2%' -- 앞뒤에 무슨 글자가 오던지 -2 이라는 문자가 있는 것을 출력
 AND ABSENCE_YN = 'Y'; -- ABSENCE_YN이 Y일때
+
+
+
+
+
 
 --8)
 SELECT CLASS_NO as CLASS_NO
@@ -23,11 +34,7 @@ WHERE PREATTENDING_CLASS_NO IS NOT NULL;
 
 
 --2. Additional SELECT
---   1,6,11)김현우
---   2,7,12)권태우
---   3,8,13)한창희
---   4,9,14)강정대
---   5,10,15)이기진
+
 
 
 --3) 
@@ -62,11 +69,11 @@ HAVING ABSENCE_YN = 'Y'
 ORDER BY DEPARTMENT_NO;
 
 --3. Additional SELECT(option)
---   1,6,11,16)김현우
---   2,7,12,17)권태우
---   3,8,13,18)한창희
---   4,9,14,19)강정대
---   5,10,15)이기진
+
+
+
+
+
 
 --3) 
 SELECT STUDENT_NAME AS 학생이름, STUDENT_NO AS 학번 , STUDENT_ADDRESS AS 주소지
@@ -122,11 +129,7 @@ COMMIT;
   
   
 --5. DML
---   1,6)김현우
---   2,7)권태우
---   3,8)한창희
---   4)강정대
---   5)이기진
+
 
 
 --3)
