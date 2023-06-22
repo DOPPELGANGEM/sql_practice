@@ -1,5 +1,5 @@
 # sql_practice 강의자료 실습 개념
-
+<br><br><br><br><br><br>
 <h1>[SQL] DDL, DML, DCL 이란?</h1>
 <h2>DDL(Data Definition Language) - 데이터 정의어</h2>
 <p>데이터베이스를 정의하는 언어이며, 데이터를 생성, 수정, 삭제하는 등의 데이터의 전체의 골격을 결정하는 역할을 하는 언어 이다.</p>
