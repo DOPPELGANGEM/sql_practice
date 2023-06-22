@@ -212,8 +212,8 @@ FROM EMPLOYEE E;
 -- EMPLOYEE SELECT에 있기 때문에 메인테이블
 -- 기준은 많은걸로 뽑는다
 -- EMP_ID랑 MANAGER_ID랑 같은걸 보여주는 서브쿼리를 만들어서 SELECT 행에붙인거다.
--- MANAGER_ID 로 시작을하는데 EMP_ID에 MANAGER_ID값이 있는지 비교를하고 EMP_ID줄에 
--- 있는 EMP_NAME을 출력한다.
+-- MANAGER_ID 로 시작을하는데 EMP_ID에 MANAGER_ID값이 있는지 비교를하고(1) EMP_ID줄에 
+-- 있는 EMP_NAME을 출력한다. (2)
 
 SELECT 1 FROM DUAL;
 
