@@ -50,7 +50,7 @@
 
 <h2>DCL(Data Control Language ) - 데이터 제어어</h2>
 <p>데이버테이스에 접근하거나 객체에 권한을 주는 등의 역할을 하는 언어이다.</p>
-<table border="1">
+<table border="1" bgcolor="white">
   <th>종류</th>
   <th>역할</th>
     <tr>
