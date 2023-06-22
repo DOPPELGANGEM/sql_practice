@@ -50,3 +50,23 @@
 
 <h2>DCL(Data Control Language ) - 데이터 제어어</h2>
 <p>데이버테이스에 접근하거나 객체에 권한을 주는 등의 역할을 하는 언어이다.</p>
+<table border="1">
+  <th>종류</th>
+  <th>역할</th>
+    <tr>
+      <td>GRANT</td>
+      <td>일반사용자(계정)에게 권한을 부여</td>
+    </tr>
+    <tr>
+      <td>REVOKE</td>
+      <td>부여된 권한을 취소</td>
+    </tr>
+    <tr>
+      <td>COMMIT</td>
+      <td>여러 명령어를 사용할 경우 중간 저장(완료)</td>
+    </tr>
+    <tr>
+      <td>ROLLBACK</td>
+      <td>잘못된 명령어 실행을 취소(복구)</td>
+    </tr>
+</table>
