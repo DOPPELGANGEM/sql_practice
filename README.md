@@ -53,7 +53,7 @@
 <table border="1">
   <th>종류</th>
   <th>역할</th>
-    <tr style="background-color:#fff;">
+    <tr>
       <td>GRANT</td>
       <td>일반사용자(계정)에게 권한을 부여</td>
     </tr>
