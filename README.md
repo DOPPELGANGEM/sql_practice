@@ -1,2 +1,2 @@
-# sql_practice
-sql 강의자료 실습 개념
+# sql_practice 강의자료 실습 개념
+
