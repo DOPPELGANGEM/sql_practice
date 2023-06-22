@@ -6,8 +6,22 @@
 <table border="1">
   <th>종류</th>
   <th>역할</th>
-    <tr>CREATE</tr>
-    <td>데이터베이스, 테이블등을 생성하는 역할을 합니다.</td>
+    <tr>
+      <td>CREATE</td>
+      <td>데이터베이스, 테이블등을 생성하는 역할을 합니다.</td>
+    </tr>
+    <tr>
+      <td>ALTER</td>
+      <td>테이블을 수정하는 역할을 합니다.</td>
+    </tr>
+    <tr>
+      <td>DROP</td>
+      <td>데이터베이스, 테이블을 삭제하는 역할을 합니다.</td>
+    </tr>
+    <tr>
+      <td>TRUNCATE</td>
+      <td>테이블을 초기화 시키는 역할을 합니다.</td>
+    </tr>
 </table>
 
 
