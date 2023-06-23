@@ -1,4 +1,4 @@
-# 이건 수정예정
+# SQL_정리_MyConcept
 <h1>SQL (Structured Query Language)</h1>
 <p>관계형 데이터베이스 관리 시스템(RDBMS)의 데이터를 관리하기 위해 만들어진 프로그래밍 언어.</p>
 
