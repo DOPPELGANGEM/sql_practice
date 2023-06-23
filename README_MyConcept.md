@@ -91,7 +91,7 @@
 <br>
 <h3><strong>TCL (Transaction Control Language)</strong></h3>
 <p>TCL은 DCL과 유사하지만, data를 제어하는 것이 아닌 transaction을 제어하기 위해 사용된다.</p>
-<h3>트랜잭션 (Transaction) : 밀접히 관련되어 분리할 수 없는 1개 이상의 DB를 조작하는 논리적 연산 단위를 의미한다. (예를 들어 게시판에 글을 작성하는 작업을 예로 들면, 게시판에 글을 업로드 하기 위해서는 게시글 작성(insert) 및 작성된 게시들을 게시판에서 조회(select) 등의 작업을 수행해야 하고, 이렇게 select + insert 문의 수행을 합쳐 트랜잭션(transaction)이라는 하나의 작업 단위로 부릅니다.)</h3>
+<p><strong>트랜잭션 (Transaction)</strong> : 밀접히 관련되어 분리할 수 없는 1개 이상의 DB를 조작하는 논리적 연산 단위를 의미한다. (예를 들어 게시판에 글을 작성하는 작업을 예로 들면, 게시판에 글을 업로드 하기 위해서는 게시글 작성(insert) 및 작성된 게시들을 게시판에서 조회(select) 등의 작업을 수행해야 하고, 이렇게 select + insert 문의 수행을 합쳐 트랜잭션(transaction)이라는 하나의 작업 단위로 부릅니다.)</p>
 <p>TCL 명령어로는 <strong>COMMIT</strong> (올바르게 반영된 data를 DB에 반영), <strong>ROLLBACK</strong>(commit되지 않은 모든 transaction 수행 이전으로 되돌림)등이 있습니다.</p>
 <h3>트랜잭션의 특징</h3>
 <p>1.원자성(Atomicity): 트랜잭션에 정의된 연산들은 모두 성공적으로 실행되거나 전혀 실행되지 않아야한다.</p>
