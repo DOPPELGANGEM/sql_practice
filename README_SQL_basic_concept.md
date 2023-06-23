@@ -1,11 +1,8 @@
 <h1>SQL (Structured Query Language)</h1>
 <p>관계형 데이터베이스 관리 시스템(RDBMS)의 데이터를 관리하기 위해 만들어진 프로그래밍 언어.</p>
 
-<h2>DB 기본 용어(SQL, DDL, DML, DCL, TCL)</h2>
-<h2>SQL 기본</h2>
-<p>문법 종류와 주요 명령어</p>
-<br>
-
+<h3>DB 기본 용어(SQL, DDL, DML, DCL, TCL)</h3>
+<h3>SQL 기본 : 문법 종류와 주요 명령어</h3>
 
 <h3>데이터 정의어 (DDL, Data Definition Language) : DB의 구조를 정의함. </h3>
 <p>CREATE : 테이블 생성</p>
