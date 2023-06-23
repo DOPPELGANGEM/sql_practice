@@ -35,12 +35,12 @@
 <p>기본키(Primary Key) <br> - 테이블행을 식별하기 위해 하나의 테이블에 단 하나의 기본키만 정의 가능 <br> - 기본 키 생성 시 DBMS는 자동으로 UNIQUE 인덱스를 생성 <br> - 기본 키 컬럼에는 NULL 입력불가</p>
 <p>고유키(Unique Key) <br> - 테이블에 저장된 행 데이터를 고유하게 식별하기 위해 생성 <br>-Null은 입력 가능.</p>
 <p>외래키(Foreign Key) <br> - 다른 테이블의 기본키를 외래 키로 지정하는 경우 생성함(참조무결성제약조건)</p>
-<p> 외래키(Foreign Key) 삭제옵션
-  -- ON DELETE CASCADE : PARENT 삭제 시 CHILD 같이 삭제
-  -- ON DELETE SET NULL: PARENT 삭제 시 CHILD의 해당 필드 NULL로 업데이트
-  -- ON DELETE SET DEFAULT : PARENT 삭제 시 CHILD의 해당 필드 DEFAULT 값으로 UPDATE
-  -- ON DELETE RESTRICT : CHILD 테이블에 PK 값이 없는 경우만 PARENT 삭제
-  -- ON DELETE NO ACTION : 참조 무결성 제약조건을 위배하는 액션은 불가
+<p> 외래키(Foreign Key) 삭제옵션 <br>
+  - ON DELETE CASCADE : PARENT 삭제 시 CHILD 같이 삭제 <br>
+  - ON DELETE SET NULL: PARENT 삭제 시 CHILD의 해당 필드 NULL로 업데이트 <br>
+  - ON DELETE SET DEFAULT : PARENT 삭제 시 CHILD의 해당 필드 DEFAULT 값으로 UPDATE <br>
+  - ON DELETE RESTRICT : CHILD 테이블에 PK 값이 없는 경우만 PARENT 삭제 <br>
+  - ON DELETE NO ACTION : 참조 무결성 제약조건을 위배하는 액션은 불가
 </p>
 <p>CHECK <br> - 입력할 수 있는 값 종류 및 범위를 제한.</p>
 <br>
