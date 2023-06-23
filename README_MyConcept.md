@@ -36,8 +36,8 @@
 <p>기본키(Primary Key) <br> - 테이블행을 식별하기 위해 하나의 테이블에 단 하나의 기본키만 정의 가능 <br> - 기본 키 생성 시 DBMS는 자동으로 UNIQUE 인덱스를 생성 <br> - 기본 키 컬럼에는 NULL 입력불가</p>
 <p>고유키(Unique Key) <br> - 테이블에 저장된 행 데이터를 고유하게 식별하기 위해 생성 <br>-Null은 입력 가능.</p>
 <p>외래키(Foreign Key) <br> - 다른 테이블의 기본키를 외래 키로 지정하는 경우 생성함(참조무결성제약조건)</p>
-<p>NOT NULL : -Null값의 입력을 금지. 해당 컬럼에 NULL이 아닌 값이 들어가도록만 정의</p>
-<p>CHECK : - 입력할 수 있는 값 종류 및 범위를 제한.</p>
+<p>NOT NULL <br> -Null값의 입력을 금지. 해당 컬럼에 NULL이 아닌 값이 들어가도록만 정의</p>
+<p>CHECK <br> - 입력할 수 있는 값 종류 및 범위를 제한.</p>
 <br>
 <h3><strong>DML(Data Manipulation Language) - 데이터 조작 언어</strong></h3>
 <p>DML은 <strong>데이터베이스에 입력된 레코드를 조회</strong>하거나 <strong>수정,삭제</strong> 등의 역할을 한다. 즉, 사용자로 하여금 데이터를 처리할 수 있게 하는 도구로서, 사용자와 DBMS간의 인터페이스를 제공한다.</p>
