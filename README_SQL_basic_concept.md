@@ -12,6 +12,7 @@
 
 <strong>DDL(Data Definition Language) 제약조건</strong>
 <p>제약 조건(CONSTRAINTS) : 제약 조건이란 테이블 작성 시 각 컬럼에 기록될 데이터에 대해 제약조건을 설정할 수 있는데 이는 데이터 무결성 보장을주 목적으로 한다. 입력 데이터에 문제가 없는지에 대한 검사와 데이터의 수정/삭제 가능 여부 검사 등을 위해 사용한다.</p>
+<br><br>
 <p>제약조건에는 NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, CHECK가 있다.</p>
 <strong>제약조건 정리</strong>
 <p><strong>NOT NULL</strong> : NOT NULL이란 데이터에 NULL을 허용하지 않는다. <br>해당 컬럼에 반드시 값이 기록되어야 하는 경우에 사용하고 특정 컬럼에 값을 저장하거나 수정할 때 <br>NULL 값을 허용하지 않도록 컬럼 레벨에서 제한한다</p>
