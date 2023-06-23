@@ -1,0 +1,288 @@
+-- ==================================== 고급쿼리 ====================================
+-- ==================================== 1. TOP-N분석 ====================================
+-- 1. TOP-N분석
+-- 2. WITH 구문
+-- 3. 계층형 쿼리(Hierarchical Query)
+-- 4. 윈도우 함수
+
+-- 특정 컬럼에서 가장 큰 N개의 값 또는 가장 작은 N개의 값을 구해야 할 경우가 생김.
+-- 예) 가장 적게 팔린 제품 10가지는? 회사에서 가장 소득이 많은 사람 3명은?
+SELECT MAX(SALARY) FROM EMPLOYEE;
+-- # ROWNUM, ROWID
+-- 테이블을 생성하면 자동으로 만들어짐
+-- ROWID : 테이블의 특정 레코드를 랜덤하게 접근하기 위한 논리적인 주소값
+-- ROUNUM : 각 행에 대한 일련번호, 오라클에서 내부적으로 부여하는 컬럼.
+SELECT ROWNUM, ROWID, EMP_ID FROM EMPLOYEE;
+-- ROWNUM이 부여된 후 ORDER BY를 하면 ROWNUM이 정상적으로 나오지 않음.
+SELECT ROWNUM, EMPLOYEE.* FROM EMPLOYEE 
+ORDER BY SALARY DESC;
+-- 해결방법 : 그렇다면 ORDER BY 후에 ROWNUM을 부여하면 되지 않을까?
+SELECT ROWNUM, E.*
+FROM
+(SELECT * FROM EMPLOYEE 
+ORDER BY SALARY DESC) E
+WHERE ROWNUM < 6;
+
+
+-- @실습문제1
+-- 1. D5부서에서 연봉 TOP3의 전체정보를 출력하세요.
+SELECT ROWNUM, E.*
+FROM
+(SELECT * FROM EMPLOYEE
+WHERE DEPT_CODE = 'D5'
+ORDER BY SALARY DESC) E
+WHERE ROWNUM < 4;
+
+-- @실습문제2
+-- 부서별 급여평균 TOP3 부서의 부서코드와 부서명, 평균급여를 출력하세요.
+SELECT DEPT_CODE, DEPT_TITLE, AVG(SALARY) "AVG_SAL"
+FROM EMPLOYEE
+JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID
+GROUP BY DEPT_CODE, DEPT_TITLE
+ORDER BY 3 DESC;
+-- ORA-00937: not a single-group group function
+-- 인라인뷰 사용, ROWNUM으로 조건 걸기
+SELECT ROWNUM, ED.*
+FROM
+(SELECT DEPT_CODE, DEPT_TITLE, TO_CHAR(ROUND(AVG(SALARY)),'L999,999,999') "AVG_SAL"
+FROM EMPLOYEE
+JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID
+GROUP BY DEPT_CODE, DEPT_TITLE
+ORDER BY 3 DESC) ED
+WHERE ROWNUM < 4;
+
+-- 4위에서 6위 구하기
+SELECT *
+FROM(
+SELECT ROWNUM RNUM , ED.*
+FROM
+(SELECT DEPT_CODE, DEPT_TITLE, TO_CHAR(ROUND(AVG(SALARY)),'L999,999,999') "AVG_SAL"
+FROM EMPLOYEE
+JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID
+GROUP BY DEPT_CODE, DEPT_TITLE
+ORDER BY 3 DESC) ED) EED
+WHERE RNUM BETWEEN 4 AND 6;
+
+-- ROWNUM = 1일때만나옴 ROWNUM = 1(1 = 1) TRUE   ROWNUM = 2(2 != 1) FALSE --> 그래서 위에 감싸줫음...
+
+SELECT ROWNUM RNUM , ED.*
+FROM
+(SELECT DEPT_CODE, DEPT_TITLE, TO_CHAR(ROUND(AVG(SALARY)),'L999,999,999') "AVG_SAL"
+FROM EMPLOYEE
+JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID
+GROUP BY DEPT_CODE, DEPT_TITLE
+ORDER BY 3 DESC) ED
+WHERE ROWNUM = 1;
+
+-- SELECT ROWNUM WHERE ROWNUM = 1;만가능 2하면조건이 맞지않는다 
+
+
+-- ==================================== 2. WITH ====================================
+-- 서브쿼리에 이름을 붙여주고 인라인뷰로 사용시 서브쿼리의 이름을 FROM절에 기술할 수 있음.
+-- 같은 서브쿼리가 여러번 사용될 경우 중복 작성을 피할 수 있고 실행속도도 빨라지는 장점이 있음.
+-- 사용방법
+-- WITH 서브쿼리명 AS (서브쿼리)
+-- SELECT * FROM (서브쿼리명);
+-- 연봉 TOP 5 직원의 전체정보를 출력하세요
+WITH TOPN_SAL AS (SELECT * FROM EMPLOYEE ORDER BY SALARY DESC)
+SELECT ROWNUM, TOPN_SAL.*
+FROM
+--(SELECT * FROM EMPLOYEE ORDER BY SALARY DESC) E 
+TOPN_SAL
+WHERE ROWNUM <= 5;
+
+
+-- @실습문제1
+-- D5부서에서 연봉 TOP3의 전체정보를 출력하세요.
+WITH TOPN_D5_SAL AS (SELECT * FROM EMPLOYEE WHERE DEPT_CODE = 'D5' ORDER BY SALARY DESC)
+SELECT ROWNUM, TOPN_D5_SAL.*
+FROM TOPN_D5_SAL
+WHERE ROWNUM <= 3;
+
+
+-- @실습문제2
+-- 부서별 급여평균 TOP3 부서의 부서코드와 부서명, 평균급여를 출력하세요.
+WITH TOP_DEPT_SAL AS (SELECT DEPT_CODE, DEPT_TITLE, ROUND(AVG(SALARY)) "AVG_SAL"
+FROM EMPLOYEE JOIN DEPARTMENT ON DEPT_CODE = DEPT_ID
+GROUP BY DEPT_CODE, DEPT_TITLE ORDER BY AVG_SAL DESC)
+SELECT *
+FROM
+(SELECT ROWNUM RNUM, TOP_DEPT_SAL.*
+FROM TOP_DEPT_SAL)
+WHERE RNUM BETWEEN 4 AND 6;
+
+
+
+-- ==================================== 3. 계층형 쿼리 ====================================
+-- JOIN을 통해 수평적으로 기준컬럼을 연결시킨 것과 달리 기준컬럼을 가지고 수직적인 관계를 만듬.
+-- 조직도, 메뉴, 답변형 게시판 등 프랙탈 구조의 표현에 적합함.
+-- 오라클에서 사용되는 구문
+-- 1. START WITH : 부모행 (루트)를 지정
+-- 2. CONNECT BY : 부모-자식관계를 지정
+-- 3. PRIOR : START WITH 절에서 제시한 부모행의 기준컬럼을 지정함
+-- 4. LEVEL : 의사컬럼(PSEUDO COLUMN), 계층정보를 나타내는 가상컬럼, SELECT, WHERE, ORDER BY에서 사용가능
+
+-- 1명이라도 직원을 관리하는 매니저의 정보를 출력하세요.
+SELECT EMP_ID, EMP_NAME, MANAGER_ID FROM EMPLOYEE E WHERE EXISTS (SELECT 1 FROM EMPLOYEE WHERE MANAGER_ID = E.EMP_ID);
+SELECT LEVEL, EMP_ID, EMP_NAME, MANAGER_ID 
+FROM EMPLOYEE
+START WITH EMP_ID = 200
+CONNECT BY PRIOR EMP_ID = MANAGER_ID;
+--ORDER BY LEVEL; --> 레벨대로보려면
+-- PRIOR 다음에 나오는 컬럼은 START WITH에서 사용된컬럼
+-- =(EQUAL) 다음에 나오는 컬럼은 START WITH 된 행의 다른 행 컬럼
+SELECT LPAD(' ',(3-1)*5,' ') FROM DUAL;
+SELECT NVL2(MANAGER_ID,MANAGER_ID,'') FROM EMPLOYEE;
+
+SELECT LPAD(' ',(LEVEL-1)*5,' ') ||EMP_NAME||NVL2(MANAGER_ID,'('||MANAGER_ID||')','') "조직도"
+FROM EMPLOYEE
+--START WITH EMP_ID = 200
+START WITH MANAGER_ID IS NULL
+CONNECT BY PRIOR EMP_ID = MANAGER_ID;
+
+-- @실습예제1
+-- MENU_TBL 테이블을 생성하는데 숫자인 NO 컬럼이 PRIMARY KEY로 있고, 문자로 크기가 100인
+-- MENU_NAME 컬럼이 있고, 숫자로 된 PARENT_NO이라고 하는 컬럼이 있음.
+DROP TABLE MENU_TBL;
+CREATE TABLE MENU_TBL
+(
+  NO NUMBER PRIMARY KEY,
+  MENU_NAME VARCHAR2(100),
+  PARENT_NO NUMBER
+);
+INSERT INTO MENU_TBL VALUES(100, '주메뉴1', null);
+INSERT INTO MENU_TBL VALUES(1000, '서브메뉴A', 100);
+INSERT INTO MENU_TBL VALUES(1001, '상세메뉴A1', 1000);
+INSERT INTO MENU_TBL VALUES(1002, '상세메뉴A2', 1000);
+INSERT INTO MENU_TBL VALUES(1003, '상세메뉴A3', 1000);
+INSERT INTO MENU_TBL VALUES(200, '주메뉴2', null);
+INSERT INTO MENU_TBL VALUES(2000, '서브메뉴B', 200);
+INSERT INTO MENU_TBL VALUES(300, '주메뉴3', null);
+INSERT INTO MENU_TBL VALUES(3000, '서브메뉴C', 300);
+INSERT INTO MENU_TBL VALUES(3001, '상세메뉴C1', 3000);
+SELECT * FROM MENU_TBL; COMMIT;
+
+SELECT LPAD(' ',(LEVEL-1)*5,' ')||MENU_NAME "메뉴"
+FROM MENU_TBL
+START WITH PARENT_NO IS NULL
+CONNECT BY PRIOR NO = PARENT_NO;
+
+
+-- ==================================== 4.윈도우 함수 ====================================
+-- 1. 순위함수
+-- a. RANK() OVER
+-- 사용법
+-- RANK() OVER (ORDER BY 컬럼명 ASC | DESC)
+-- -> 특정 컬럼 기준으로 랭킹 부여함, 중복 순위 다음은 해당 갯수만큼 건너뛰고 반환함. 19 -> 21 (20안찍고)
+-- 예제
+-- 회사의 연봉 순위를 출력하시오.
+SELECT ROWNUM "연봉순위", E.* 
+FROM
+(SELECT EMP_NAME, SALARY FROM EMPLOYEE
+ORDER BY SALARY DESC) E;
+
+-- WITH로 서브쿼리 이름 지어주기
+WITH TOPN_SAL 
+AS (SELECT EMP_NAME, SALARY FROM EMPLOYEE
+ORDER BY SALARY DESC)
+SELECT ROWNUM, TOPN_SAL.*
+FROM TOPN_SAL;
+
+-- 순위함수 사용해보기
+SELECT EMP_NAME, SALARY
+, RANK() OVER(ORDER BY SALARY DESC) AS "연봉순위"
+FROM EMPLOYEE;
+
+-- @실습문제1
+-- 입사일이 빠른 순으로 순위를 정하여 출력하시오.
+-- 이름, 입사일, 순위
+
+SELECT EMP_NAME, HIRE_DATE, RANK() OVER(ORDER BY HIRE_DATE ASC) AS "입사순서"
+FROM EMPLOYEE;
+
+
+-- b. DENSE_RANK() OVER
+-- -> 중복 순위 상관없이 순차적으로 반환, 빠짐이 없이 빽빽한 순위를 부여함 19-> 20-> 21 다찍음
+
+SELECT EMP_NAME, SALARY
+, DENSE_RANK() OVER(ORDER BY SALARY DESC) AS "순위"
+FROM EMPLOYEE;
+
+-- @실습문제2
+-- 기본급여의 등수가 1등부터 10등까지인 사람의 직원의 이름, 급여, 순위를 출력하세요.
+WITH RANK_SAL 
+AS (SELECT EMP_NAME, SALARY
+, RANK() OVER(ORDER BY SALARY DESC) AS "순위"
+FROM EMPLOYEE)
+SELECT * 
+FROM RANK_SAL
+WHERE 순위 BETWEEN 1 AND 10;
+
+
+
+
+
+
+
+--- ========================================== 시험문제연습(키값연습) ==========================================
+CREATE TABLE USER_INFO
+(
+  USER_ID VARCHAR2(20) PRIMARY KEY,
+  USER_PW VARCHAR2(20) NOT NULL,
+  USER_NAME VARCHAR2(20) NOT NULL,
+  PHONE NUMBER NOT NULL
+);
+ALTER TABLE USER_INFO
+MODIFY PHONE VARCHAR2(20);
+INSERT INTO USER_INFO VALUES('kh_hong1', 'pass01', '홍길동', '01055557777');
+SELECT * FROM USER_INFO;
+DELETE FROM USER_INFO;
+
+
+CREATE TABLE SHOP_MEMBER
+(
+  MEMBER_ID VARCHAR2(20) PRIMARY KEY,
+  MEMBER_PW VARCHAR2(20) NOT NULL,
+  PHONE VARCHAR2(11) NOT NULL
+);
+
+CREATE TABLE SHOP_BUY
+(
+  BUY_NO NUMBER PRIMARY KEY,
+  BUY_ITEM VARCHAR2(20) NOT NULL,
+  BUY_MEMBER VARCHAR2(20) NOT NULL,
+  BUY_DATE DATE DEFAULT SYSDATE,
+  FOREIGN KEY(BUY_MEMBER) REFERENCES SHOP_MEMBER(MEMBER_ID) ON DELETE SET NULL
+);
+-- 부모테이블을 먼저만들고 자식테이블 만들면서 컬럼하나를 FOREIGN로 지정
+-- ON DELETE SET NULL => 부모테이블의 행이 삭제되면 저컬럼의값들은 null이된다는거임
+-- 기본옵션이라기보다 그냥 그렇게 설정하는 것
+
+DROP TABLE SHOP_MEMBER;
+DROP TABLE SHOP_BUY;
+SELECT * FROM SHOP_MEMBER;
+SELECT * FROM SHOP_BUY;
+-- DROP TABLE SHOP_BUY; 하고 CREATE TABLE~~ NOT NULL 제약조건을 지워준다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
