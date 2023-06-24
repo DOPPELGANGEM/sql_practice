@@ -49,21 +49,63 @@ COMMIT;
 DROP TABLE CODELION;
 TRUNCATE TABLE CODELION;
 
+-- ============ INSERT ============
+-- 테이블에 새로운 데이터를 삽입하는 쿼리이다.
+-- INSERT query 수행시 데이터가 한 ROW씩 테이블에 입력이된다.
+SELECT * FROM NETFLIX n;
+INSERT INTO NETFLIX VALUES('나의 아저씨','드라마',50,SYSDATE);
+COMMIT;
+INSERT INTO NETFLIX (VIDEO_NAME, VIEW_CNT) VALUES ('시그널',42);
+ROLLBACK; -- 내가 INSERT 햇던 작업을 취소하는 행위
+
+INSERT INTO NETFLIX VALUES('응답하라 1988', '드라마', 35, SYSDATE-30);
+INSERT INTO NETFLIX VALUES('이태원클라쓰','드라마',30, SYSDATE-40);
+INSERT INTO NETFLIX VALUES('미스터션사인','드라마',22, SYSDATE-300);
+DELETE FROM NETFLIX WHERE VIDEO_NAME = '응답하라 1988';
+
+
+-- ============ UPDATE ============
+-- 데이터를 변경한다.
+-- UPDATE를 사용할 때 주의할점은 WHERE 조건절을 빼먹었을 때 모든 데이터가 변경이 돼 버리기때문에 주의 WHERE 조건 잘작성하기
+SELECT * FROM NETFLIX n;
+
+UPDATE NETFLIX SET VIEW_CNT = 70 WHERE VIDEO_NAME = '나의 아저씨';
+COMMIT;
+ROLLBACK;
+
+UPDATE NETFLIX SET CATEGORY = '드라마',REG_DATE = TO_DATE('20210101','YYYYMMDD') WHERE VIDEO_NAME = '시그널';
+
+-- ============ DELETE ============
+-- 테이블에 존재하는 데이터를 삭제하는 query
+-- TRUNCATE와 유사하지만 TRUNCATE가 테이블의 모든 데이터를 삭제하는 역할을 한다면 DELETE는 내가원하는 데이터만 골라서 삭제할 수가 있다.
+-- TRUNCATE는 한번 실행하면 되돌릴 수 없지만 DELETE는 ROLLBACK을 이용하여 되돌릴 수가 있다.
+-- 모든 데이터를 삭제하는 경우라면 DELETE보다 TRUNCATE가 빠르다.
+SELECT * FROM NETFLIX n;
+
+DELETE FROM NETFLIX n WHERE VIDEO_NAME = '미스터션사인';
+COMMIT;
+
+DELETE FROM NETFLIX n WHERE CATEGORY = '드라마' AND VIEW_CNT < 35;
+ROLLBACK;
+DELETE FROM NETFLIX WHERE VIDEO_NAME IN ('시그널','나의 아저씨');
+DELETE FROM NETFLIX n;
+
+-- ============ SELECT ============
+SELECT * FROM NETFLIX n;
+
+SELECT * FROM NETFLIX n WHERE VIDEO_NAME = '나의 아저씨';
+SELECT * FROM NETFLIX n WHERE VIDEO_NAME <> '나의 아저씨';
+SELECT * FROM NETFLIX n WHERE VIEW_CNT = 50;
+SELECT * FROM NETFLIX n WHERE VIEW_CNT <> 50;
+SELECT * FROM NETFLIX n WHERE REG_DATE > SYSDATE-30; -- 최근 한달 동안인 데이터를 출력하고싶다
+SELECT * FROM NETFLIX n WHERE REG_DATE < SYSDATE-30; -- 한달 전에 등록된 데이터
+SELECT CATEGORY FROM NETFLIX n;
+SELECT DISTINCT CATEGORY FROM NETFLIX n; -- 중복되는것은 하나로만 보고싶다 -> DISTINCT
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+-- ============ 번외 ============
 -- 테이블 참조, Foreign Key, 참조 무결성 제약조건
 CREATE TABLE PARENT (
   P_ID VARCHAR2(2) NOT NULL
