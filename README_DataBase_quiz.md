@@ -47,6 +47,11 @@
 <p><strong>패스워드 변경</strong></p>
 <p>ALTER USER 사용자명 IDENTIFIED BY 바꿀비밀번호</p>
 <h2>3.제약조건 중 NOT NULL, UNIQUE 제약조건에 대해 서술하시오.</h2>
+
+
+
+
+
 <h2>4.제약조건 중 PRIMARY KEY, FOREIGN KEY, CHECK 에 대하여 서술하시오.</h2>
 <h2>5.데이터 오브젝트를 정의하기 위한 DDL(Data Definition Language)에 대해 서술하시오.</h2>
 <h2>6.외래키 제약조건 설정 시 사용하는 ON DELETE CASCADE, ON DELETE SET NULL 옵션에 대해 서술하시오.</h2>
