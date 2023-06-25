@@ -128,6 +128,12 @@
     <p>참조되는 부모 테이블 행에 대한 DELETE를 허용한다. <br>즉, 참조되는 부모 테이블 값이 삭제되면 연쇄적으로 자식 테이블 값 역시 삭제된다는 의미이다.</p>
     <h3>ON DELETE SET NULL</h3>
     <p>참조되는 부모 테이블 행에 대한 DELETE를 허용한다. <br>이건 CASCADE와는 다른데, 부모 테이블의 값이 삭제되면 해당 참조하는 자식 테이블의 값들이 NULL로 설정되는 옵션이다.</p>
+    <h3>ON DELETE SET DEFAULT</h3>
+    <p>PARENT 삭제 시 CHILD의 해당 필드 DEFAULT 값으로 UPDATE</p>
+    <h3>ON DELETE RESTRICT</h3>
+    <p>CHILD 테이블에 PK 값이 없는 경우만 PARENT 삭제</p>
+    <h3>ON DELETE NO ACTION</h3>
+    <p>참조 무결성 제약조건을 위배하는 액션은 불가</p>
   </div>
   <div class="check_desc">
     <h3>💡 [CHECK 제약조건]</h3>
