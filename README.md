@@ -105,6 +105,7 @@
   <p>DDL을 통해 데이터 베이스와 테이블을 <strong>생성 및 변경,제거</strong>를 하고 <br> DML을 통해 생성된  테이블 내에 있는 데이터들(행과 열)을 <strong>입력,변경,수정</strong>등을하며 <br> DCL을 통해 데이터베이스의 <strong>접속 권한</strong>등을 수정할 수 있다. <br>TCL은 트랜잭션을 제어하는 명력인 <strong>COMMIT</strong>과 <strong>ROLLBACK</strong>만을 따로 분리해 TCL이라고 표현한다.
   </p>
 </div>
+<hr>
 
 <div class="concept concept_02">
   <h2>데이터베이스 CRUD란?</h2>
