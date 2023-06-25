@@ -161,70 +161,141 @@ SELECT * FROM NETFLIX ORDER BY CATEGORY, VIEW_CNT DESC;
 SELECT * FROM NETFLIX ORDER BY CATEGORY DESC, VIEW_CNT DESC;
 
 -- ============ GROUP BY ============
+-- 데이터를 그룹으로 묶는다.
+SELECT CATEGORY, COUNT(*) FROM NETFLIX GROUP BY CATEGORY;
+SELECT CATEGORY, SUM(VIEW_CNT) FROM NETFLIX GROUP BY CATEGORY;
+SELECT CATEGORY, MAX(VIEW_CNT) FROM NETFLIX GROUP BY CATEGORY;
+SELECT CATEGORY, MAX(VIEW_CNT) FROM NETFLIX GROUP BY CATEGORY ORDER BY MAX(VIEW_CNT) DESC;
+SELECT CATEGORY, MIN(VIEW_CNT) FROM NETFLIX GROUP BY CATEGORY;
+SELECT CATEGORY, MAX(VIEW_CNT), MIN(VIEW_CNT) FROM NETFLIX GROUP BY CATEGORY;
+SELECT CATEGORY, AVG(VIEW_CNT) FROM NETFLIX GROUP BY CATEGORY;
 
 
+-- ============ INNER JOIN ============
+-- JOIN : 여러개의 테이블을 연결한다.
+-- 연결해주는 방식에따라 INNER JOIN, OUTER JOIN 으로 나누어진다.
+-- INNER JOIN에서 가장 중요하게 기억해야 할 부분은 두 테이블에 공통적으로 존재하는 데이터여야지 출력이된다!
+-- 그리고 JOIN의 관계는 1:1이 될 수도 있고 1:N이 될 수도 있고 N:1이 될 수도 있다.
 
-
-
-
-
-
-
-
-
-
-
--- ============ 번외 ============
--- 테이블 참조, Foreign Key, 참조 무결성 제약조건
-CREATE TABLE PARENT (
-  P_ID VARCHAR2(2) NOT NULL
+CREATE TABLE NETFLIX_CAST (
+	VIDEO_NAME		VARCHAR2(50),
+	CAST_MEMBER		VARCHAR2(30),
+	BIRTHDAY		DATE,
+	GENDER			VARCHAR2(3)
 );
 
- ALTER TABLE PARENT ADD CONSTRAINT P_PK PRIMARY KEY(P_ID);
--- ALTER TABLE [pk 값을 넣으려는 테이블명] ADD CONSTRAINT [PK 이름 지정] PRIMARY KEY [PK 지정하려는 컬럼명]
+INSERT INTO NETFLIX_CAST VALUES ('나의 아저씨','이지은',TO_DATE('19930516','YYYYMMDD'),'여');
+INSERT INTO NETFLIX_CAST VALUES ('시그널','조진웅',TO_DATE('19760303','YYYYMMDD'),'남');
+INSERT INTO NETFLIX_CAST VALUES ('효리네 민박','이효리',TO_DATE('19790510','YYYYMMDD'),'여');
+INSERT INTO NETFLIX_CAST VALUES ('이태원 클라쓰','박서준',TO_DATE('19881216','YYYYMMDD'),'남');
+INSERT INTO NETFLIX_CAST VALUES ('기생충','송강호',TO_DATE('19670117','YYYYMMDD'),'남');
+INSERT INTO NETFLIX_CAST VALUES ('미생','임시완',TO_DATE('19881201','YYYYMMDD'),'남');
+INSERT INTO NETFLIX_CAST VALUES ('승리호','김태리',TO_DATE('19900424','YYYYMMDD'),'여');
 
-CREATE TABLE CHILD(
-  C_ID VARCHAR2(2) NOT NULL,
-  P_ID VARCHAR2(2)
-);
--- ALTER TABLE [pk 값을 넣으려는 테이블명] ADD CONSTRAINT [PK 이름 지정] PRIMARY KEY [PK 지정하려는 컬럼명]
-ALTER TABLE CHILD ADD CONSTRAINT C_PK PRIMARY KEY(C_ID);
--- ALTER TABLE [FK 값을 넣으려는 테이블명] ADD CONSTRAINT [ FK 이름 지정] FOREIGN KEY [ FK 지정하려는 컬럼명] REFERENCES [참조하는 부모 테이블 명] (참조하려는 부모 테이블의 칼럼명)
-ALTER TABLE CHILD ADD CONSTRAINT C_FK FOREIGN KEY(P_ID) REFERENCES PARENT(P_ID);
+COMMIT;
 
-INSERT INTO PARENT VALUES('A');
-INSERT INTO PARENT VALUES('B');
-SELECT * FROM PARENT;
-INSERT INTO CHILD VALUES('a','A');
-SELECT * FROM CHILD;
+SELECT * FROM NETFLIX_CAST;
+-- JOIN을 할때는 컬럼앞에 이 컬럼이 어느 테이블에 속한 컬럼인지를 명시해 주기 위해서 테이블명.컬럼명 이런식으로 작성! (alias)
+SELECT A.VIDEO_NAME, A.CATEGORY , B.CAST_MEMBER , B.BIRTHDAY
+FROM NETFLIX A, NETFLIX_CAST B
+WHERE A.VIDEO_NAME = B.VIDEO_NAME;
 
-INSERT INTO CHILD VALUES('b','B');
--- 부모에게 없는 값을 자식에게 넣었을 때 참조무결성에 위배된다.
-
-DELETE FROM PARENT WHERE P_ID = 'A';
--- A의 자식이 있기 때문에 부모인 A를 지울수없다?
-
-ALTER TABLE CHILD DROP CONSTRAINT C_FK;
-
-ALTER TABLE CHILD ADD CONSTRAINT C_FK FOREIGN KEY(P_ID) REFERENCES PARENT(P_ID)
-ON DELETE CASCADE;
--- ON DELETE CASCADE : PARENT 삭제 시 CHILD 같이 삭제
--- ON DELETE SET NULL: PARENT 삭제 시 CHILD의 해당 필드 NULL로 업데이트
--- ON DELETE SET DEFAULT : PARENT 삭제 시 CHILD의 해당 필드 DEFAULT 값으로 UPDATE
--- ON DELETE RESTRICT : CHILD 테이블에 PK 값이 없는 경우만 PARENT 삭제
--- ON DELETE NO ACTION : 참조 무결성 제약조건을 위배하는 액션은 불가
-
-SELECT * FROM CHILD;
-
-DROP TABLE PARENT;
-DROP TABLE CHILD;
+INSERT INTO NETFLIX_CAST VALUES('효리네 민박', '이상순', TO_DATE('19740825','YYYYMMDD'),'남');
 
 
+-- ============ OUTER JOIN ============
+-- LEFT OUTER JOIN , RIGHT OUTER JOIN, FULL OUTER JOIN
+-- LEFT OUTER JOIN : LEFT TABLE의 모든 데이터가 출력이 되는 것을 전제로 조인이 되는 방식
+-- RIGHT OUTER JOIN : RIGHT TABLE의 모든 데이터가 출력이 되는 것을 전제로 조인이 되는 방식
+-- FULL OUTER JOIN: LEFT TABLE, RIGHT TABLE의 모든 데이터가 출력이 되는 것을 전제로 JOIN이 되는 방식 (여기서 모든 데이터가 출력이 
+-- 된다는 말은 JOIN되는 TABLE에 짝궁이 없어도 출력이 된다는 이야기이다.)
+
+SELECT A.VIDEO_NAME, A.CATEGORY, B.CAST_MEMBER, B.BIRTHDAY
+  FROM NETFLIX A
+  LEFT OUTER JOIN NETFLIX_CAST B
+  ON A.VIDEO_NAME = B.VIDEO_NAME
+WHERE B.CAST_MEMBER IS NOT NULL; -- INNER JOIN과 같은역할을 하고할수있다.
+
+SELECT A.VIDEO_NAME, A.CATEGORY, B.CAST_MEMBER, B.BIRTHDAY
+  FROM NETFLIX A, NETFLIX_CAST B
+  WHERE A.VIDEO_NAME = B.VIDEO_NAME;
+
+-- ============ 날짜함수 ============
+-- DAUL : 시스템에서 제공하는 DUMMY 테이블(보통 테이블에서 데이터를 꺼내 오지 않고 임의의 상수값 같은 정해진 값만 SELECT절에 있을 때
+-- 많이 사용하는 시스템 테이블이다.)
+SELECT SYSDATE FROM DUAL; 
+
+-- ADD_MONTHS (init_date, add_months)
+-- 특정일자에서 월을 더한 값을 반환하는 함수
+-- 매개변수
+-- init_date 
+--  datetime Type 또는 DATE로 변환할 수 있는 값입니다.
+-- add_months 
+--  초기날짜(initdate)에 추가할 개월 수를 지정합니다.
+--  음수일 경우 초기 날짜(init_date)의 이전 개월로 계산됩니다.
+--  0일 경우 초기날짜(init_date)의 마지막날입니다.
+SELECT ADD_MONTHS(SYSDATE,3) FROM DUAL;
+SELECT ADD_MONTHS(SYSDATE,-3) FROM DUAL;
+
+SELECT TO_CHAR(SYSDATE, 'YYYYMMDD HH24MISS') FROM DUAL; -- HH다음에 24가온것은 시간을 24단위로 출력하겟다.
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS') FROM DUAL;
+
+-- ============ REPLACE ============
+-- 특정문자를 다른 문자로 대체하는 함수
+SELECT REPLACE('코드라이언','코드','CODE') FROM DUAL; -- 코드라이언이라는 단어에서 '코드'를 'CODE'로 대체해라
+SELECT REPLACE('코드라이언','코드') FROM DUAL; -- 뒤에 대체할 문자를 적어주지않으면 '코드'라는단어가 NULL이 되어 사라지게된다!
+SELECT REPLACE('010-1234-5678','-') FROM DUAL;
+
+SELECT 
+'안녕하세요 
+코드라이언입니다.'
+FROM DUAL;
+
+SELECT REPLACE('안녕하세요 
+코드라이언입니다.',CHR(10),' ') FROM DUAL;
+SELECT * FROM NETFLIX_CAST;
+SELECT REPLACE(CAST_MEMBER, '이지은', '아이유') FROM NETFLIX_CAST;
 
 
+-- ============ SUBSTR ============
+-- 문자를 원하는 만큼 자르는 함수
+
+-- '코드라이언'이라는 문자에서 세번째 자리부터 '라'가있는 자리부터 두글자를 가져오겠다는의미이다.
+SELECT SUBSTR('코드라이언',3,2) FROM DUAL; --라이
+-- 마지막인자를 생략하면 세번째자리부터 문자의 끝까지 가져오게된다.
+SELECT SUBSTR('코드라이언',3) FROM DUAL; -- 라이언
+SELECT SUBSTR('코드라이언',-4,3) FROM DUAL; -- 드라이
+SELECT SUBSTR('코드라이언',-4) FROM DUAL; -- 드라이언
+
+SELECT * FROM NETFLIX_CAST;
+SELECT SUBSTR(CAST_MEMBER,1,1) || '*' || SUBSTR(CAST_MEMBER,3) FROM NETFLIX_CAST; -- EX)이벤트당첨자 한*희 이런거..
+SELECT SUBSTR('미국 캘리포니아에 본사를 둔 우주개발 회사 오비탈 어셈블리가 2027년 세계 최초로
+우주 호텔을 가동할 계획이라고 IT매체 BGR이 8일 보도했다.',1,20) || '.......' FROM DUAL;
 
 
+-- ============ UPPER / LOWER 함수 ============
+-- UPPER / LOWER : 문자를 대문자 / 소문자로 바꿔주는함수
+SELECT UPPER('CodeLion') FROM DUAL;
+SELECT LOWER('CodeLion') FROM DUAL;
+SELECT * FROM MEMBER WHERE ID = UPPER('CodeLion');
 
+-- ============ 숫자함수 ============
+-- 숫자데이터를 조작하는 함수
+-- ROUND : 반올림
+SELECT ROUND(3.16) FROM DUAL;
+SELECT ROUND(3.67) FROM DUAL;
+SELECT ROUND(3.16, 1) FROM DUAL; --3.2 반올림후 소수점 첫째자리까지
+
+-- TRUNC : 버림
+SELECT TRUNC(3.16) FROM DUAL; 
+SELECT TRUNC(3.67) FROM DUAL;
+SELECT TRUNC(3.16,1) FROM DUAL;
+
+-- CEIL : 올림
+SELECT CEIL(3.16) FROM DUAL;
+SELECT CEIL(3.67) FROM DUAL;
+SELECT CEIL(-3.16) FROM DUAL;
 
 
 
