@@ -1,8 +1,8 @@
 # 데이터베이스구현_서술형문제_정리
 <!-- css -->
-<style>
+<!-- <style>
 
-</style>
+</style> -->
 
 <div class="quiz quiz_01">
   <h1>1.DBMS(Data Base Management System)에 대해 서술하시오.</h1>

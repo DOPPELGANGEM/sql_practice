@@ -1,8 +1,8 @@
 <!-- css -->
-<style>
-.red_txt { color:#ff0000; font-size:18px; }
-</style>
+<!-- <style>
 
+</style> -->
+<link rel="stylesheet" href="resources/style.css">
 <div class="concept concept01">
   <h3>데이터베이스 : 데이터를 저장하는 공간</h3>
   <h3>SQL : 중요하고도 방대한 데이터를 다루는데 사용되는 언어 데이터를 꺼내고 수정하고 삭제하기 위해서 SQL 사용</h3>
@@ -104,7 +104,7 @@
 
 <div class="concept concept_02">
   <h2>데이터베이스 CRUD란?</h2>
-  <p>CRUD는 <strong class="red_txt">C</strong>REATE, <strong class="red_txt">R</strong>EAD, <strong class="red_txt">U</strong>PDATE, <strong class="red_txt">D</strong>ELETE</p>
+  <p>CRUD는 <strong>C</strong>REATE, <strong>R</strong>EAD, <strong>U</strong>PDATE, <strong>D</strong>ELETE</p>
   <p>그럼 CRUD는 무엇인지? SQL에서는 무엇인지 표에서 정리해보자!</p>
   <table>
     <tr>
@@ -113,22 +113,22 @@
       <th>SQL</th>
     </tr>
     <tr>
-      <td><strong class="red_txt">C</strong>REATE</td>
+      <td>CREATE</td>
       <td>생성</td>
       <td>INSERT</td>
     </tr>
     <tr>
-      <td><strong class="red_txt">R</strong>EAD</td>
+      <td>READ</td>
       <td>읽기</td>
       <td>SELECT</td>
     </tr>
     <tr>
-      <td><strong class="red_txt">U</strong>PDATE</td>
+      <td>UPDATE</td>
       <td>수정</td>
       <td>UPDATE</td>
     </tr>
     <tr>
-      <td><strong class="red_txt">D</strong>ELETE</td>
+      <td>DELETE</td>
       <td>삭제</td>
       <td>DELETE</td>
     </tr>
@@ -146,9 +146,9 @@
 
 
 <!-- script -->
-<script>
+<!-- <script>
 
-</script>
+</script> -->
 
 
 

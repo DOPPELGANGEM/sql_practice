@@ -1,5 +1,4 @@
 # SQL활용_서술형문제_정리
-<br><br>
 
 <div class="quiz quiz_01">
   <h1>1. SQL (Structured Query Language)에 대하여 서술하시오</h1>
