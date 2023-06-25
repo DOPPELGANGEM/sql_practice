@@ -100,7 +100,6 @@
     <p>3.고립성(Isolation) : 트랜잭션 실행 도중에는 다른 트랜잭션의 영향을 받으면 안된다.</p>
     <p>4.지속성(Durability) : 트랜잭션이 성공적으로 수행되면,DB의 내용은 영구적으로 저장된다.</p>
   </div>
-  <br><br>
   <p>위 내용을 간단하게 정리하면,</p>
   <p>DDL을 통해 데이터 베이스와 테이블을 <strong>생성 및 변경,제거</strong>를 하고 <br> DML을 통해 생성된  테이블 내에 있는 데이터들(행과 열)을 <strong>입력,변경,수정</strong>등을하며 <br> DCL을 통해 데이터베이스의 <strong>접속 권한</strong>등을 수정할 수 있다. <br>TCL은 트랜잭션을 제어하는 명력인 <strong>COMMIT</strong>과 <strong>ROLLBACK</strong>만을 따로 분리해 TCL이라고 표현한다.
   </p>
