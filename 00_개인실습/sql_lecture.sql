@@ -300,6 +300,79 @@ SELECT CEIL(-3.16) FROM DUAL;
 
 
 
+-- 번외 Foreign Key
+-- FOREIGN KEY 제약조건 (참조되는 테이블의 컬럼의값이 존재하면 허용한다. 따로테이블만들어서 본다.)
+-- 테이블 참조, Foreign Key, 참조 무결성 제약조건
+CREATE TABLE PARENT(
+  P_ID VARCHAR2(2) NOT NULL
+);
+
+-- ALTER TABLE [pk 값을 넣으려는 테이블명] ADD CONSTRAINT [PK 이름 지정] PRIMARY KEY [PK 지정하려는 컬럼명]
+ALTER TABLE PARENT ADD CONSTRAINT P_PK PRIMARY KEY(P_ID);
+
+CREATE TABLE CHILD(
+  C_ID VARCHAR(2) NOT NULL,
+  P_ID VARCHAR(2)
+);
+
+-- ALTER TABLE [pk 값을 넣으려는 테이블명] ADD CONSTRAINT [PK 이름 지정] PRIMARY KEY [PK 지정하려는 컬럼명]
+ALTER TABLE CHILD ADD CONSTRAINT C_PK PRIMARY KEY(C_ID);
+-- ALTER TABLE [FK 값을 넣으려는 테이블명] ADD CONSTRAINT [ FK 이름 지정] FOREIGN KEY [ FK 지정하려는 컬럼명] REFERENCES [참조하는 부모 테이블 명] (참조하려는 부모 테이블의 칼럼명)
+ALTER TABLE CHILD ADD CONSTRAINT C_FK FOREIGN KEY(P_ID) REFERENCES PARENT(P_ID);
+
+INSERT INTO PARENT VALUES('A');
+INSERT INTO PARENT VALUES('B');
+
+INSERT INTO CHILD VALUES('a','A');
+
+
+-- 부모에게 없는 값을 자식에게 넣었을 때 참조무결성에 위배된다.
+INSERT INTO CHILD VALUES('b','B');
+
+-- A의 자식이 있기 때문에 부모인 A를 지울수없다?
+DELETE FROM PARENT WHERE P_ID = 'A';
+
+ALTER TABLE CHILD DROP CONSTRAINT C_FK;
+ALTER TABLE CHILD ADD CONSTRAINT C_FK FOREIGN KEY(P_ID) REFERENCES PARENT(P_ID) ON DELETE CASCADE;
+
+
+
+SELECT * FROM PARENT;
+SELECT * FROM CHILD;
+
+DROP TABLE CHILD;
+DROP TABLE PARENT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
