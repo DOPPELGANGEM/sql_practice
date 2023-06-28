@@ -1,8 +1,11 @@
-사용자이름:아이돌계정실습_한창희
+사용자이름 : 아이돌계정실습_한창희
 ID : IDOL_MEMBER
 PW : IDOL_MEMBER
 
-
-사용자이름:한창희개인실습 (강의 + 실습)
+사용자이름 : 한창희개인실습 (강의 + 실습)
 ID:HCH
 PW:HCH
+
+사용자이름 : IT핥기_TESTER
+ID : C##TESTER
+PW : 1234
